@@ -1,0 +1,6 @@
+@POCMONGO_HostAddress = http://localhost:5155
+
+GET {{POCMONGO_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
