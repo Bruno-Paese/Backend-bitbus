@@ -7,7 +7,6 @@ namespace POC_Mongo.Src.Repositories.MongoDB
     public class MongoDBRepository
     {
         private static MongoClient? client = null;
-        private readonly IConfiguration _configuration;
 
         public static MongoClient connect()
         {
