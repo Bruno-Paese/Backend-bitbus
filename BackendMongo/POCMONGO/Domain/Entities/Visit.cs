@@ -13,7 +13,7 @@ namespace POCMONGO.Domain.Entities
         public String local {  get; set; }
         public String period {  get; set; }
         public String responsable {  get; set; }
-        public String[] visitors {  get; set; }
+        public Visitor[] visitors {  get; set; }
         public Item[] items { get; set; }
 
 
@@ -38,6 +38,10 @@ namespace POCMONGO.Domain.Entities
         {
             try
             {
+                foreach (var visitor in this.visitors)
+                {
+                    visitor.save();
+                }
                 await collection.InsertOneAsync(this);
                 return true;
             }
