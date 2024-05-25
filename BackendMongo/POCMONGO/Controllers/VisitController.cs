@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using POCMONGO.Domain.Entities;
+using POCMONGO.Domain.Validators;
 
 namespace ItemStoreApi.Controllers;
 
@@ -8,32 +9,83 @@ namespace ItemStoreApi.Controllers;
 public class VisitController : ControllerBase
 {
     [HttpGet]
-    public async Task<List<Visit>> Get() =>
-        await (new Visit()).getAll();
+    public async Task<IActionResult> Get()
+    {
+        try
+        {
+            return Ok(await (new Visit()).getAll());
+        } catch {
+            return StatusCode(500);
+        }
+
+    }
 
     [HttpGet("{id}")]
-    public async Task<Visit> GetOne(string id) =>
-        await (new Visit()).getOne(id);
+    public async Task<IActionResult> GetOne(string id) {
+        try {
+            return Ok(await (new Visit()).getOne(id));
+        } catch {
+            return StatusCode(500);
+        }
+    }
 
     [HttpPost]
     public async Task<IActionResult> save([FromBody] Visit visit)
     {
-        if (await visit.save())
+        try
         {
-            return CreatedAtAction("Save", visit);
-        }
+            var saveResult = await visit.save();
+            if (saveResult)
+            {
+                return CreatedAtAction("Save", visit);
+            }
 
-        return BadRequest();
+            return BadRequest();
+        } catch
+        {
+            return StatusCode(500);
+        }
     }
 
     [HttpPut]
     public async Task<IActionResult> update([FromBody] Visit visit)
     {
-        if (await visit.update())
+        try
         {
-            return CreatedAtAction("Update", visit);
+            if (await visit.update())
+            {
+                return CreatedAtAction("Update", visit);
+            }
+    
+            return BadRequest();
         }
+        catch
+        {
+            return StatusCode(500);
+        }
+    }
 
-        return BadRequest();
+    [HttpPut("{id}")]
+    public async Task<IActionResult> updateVisitors(string id, [FromBody] Visitor[] visitors)
+    {
+        try
+        {
+            Visit visit = new Visit();
+            visit = await visit.getOne(id);
+        
+
+            visit.visitors = visitors;
+
+            if (await visit.update())
+            {
+                return CreatedAtAction("Update", visit);
+            }
+
+            return BadRequest();
+        }
+        catch
+        {
+            return StatusCode(500);
+        }
     }
 }

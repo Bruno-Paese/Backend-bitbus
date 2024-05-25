@@ -21,6 +21,7 @@ namespace POCMONGO.Domain.Entities
         {
             MongoClient client = MongoDBRepository.connect();
             collection = client.GetDatabase(DATABASE).GetCollection<Visit>(COLLECTION_NAME);
+            collection = null;
         }
 
         public async Task<List<Visit>> getAll()
