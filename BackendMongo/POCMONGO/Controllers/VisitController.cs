@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using POCMONGO.Controllers.Filter;
 using POCMONGO.Domain.Entities;
 using POCMONGO.Domain.Validators;
 
@@ -9,11 +10,12 @@ namespace ItemStoreApi.Controllers;
 public class VisitController : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get([FromQuery] VisitFilter? filter)
     {
         try
         {
-            return Ok(await (new Visit()).getAll());
+            var result = await (new Visit()).getAll(filter);
+            return Ok(result);
         } catch {
             return StatusCode(500);
         }
@@ -70,15 +72,44 @@ public class VisitController : ControllerBase
     {
         try
         {
+            VisitorValidator validator = new VisitorValidator();
             Visit visit = new Visit();
             visit = await visit.getOne(id);
         
-
             visit.visitors = visitors;
+
+            foreach (var visitor in visitors)
+            {
+                if (!validator.IsValid(visitor))
+                {
+                    return BadRequest(validator.getErrors());
+                }
+            }
 
             if (await visit.update())
             {
                 return CreatedAtAction("Update", visit);
+            }
+
+            return BadRequest();
+        }
+        catch
+        {
+            return StatusCode(500);
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> delete(string id)
+    {
+        try
+        {
+            Visit visit = new Visit();
+            visit.Id = id;
+
+            if (await visit.delete())
+            {
+                return Ok();
             }
 
             return BadRequest();

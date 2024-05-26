@@ -1,6 +1,8 @@
 ﻿using MongoDB.Driver;
 using POC_Mongo.Src.Domain.Entities;
 using POC_Mongo.Src.Repositories.MongoDB;
+using POCMONGO.Controllers.Filter;
+using System.Text.RegularExpressions;
 
 namespace POCMONGO.Domain.Entities
 {
@@ -10,7 +12,7 @@ namespace POCMONGO.Domain.Entities
 
         private IMongoCollection<Visit> collection;
 
-        public String local {  get; set; }
+        public String place {  get; set; }
         public String period {  get; set; }
         public String responsable {  get; set; }
         public Visitor[] visitors {  get; set; }
@@ -21,12 +23,26 @@ namespace POCMONGO.Domain.Entities
         {
             MongoClient client = MongoDBRepository.connect();
             collection = client.GetDatabase(DATABASE).GetCollection<Visit>(COLLECTION_NAME);
-            collection = null;
         }
 
-        public async Task<List<Visit>> getAll()
+        public async Task<List<Visit>> getAll(VisitFilter filter)
         {
-            List<Visit> items = await collection.Find(_ => true).ToListAsync();
+            List<Visit> items;
+            var searchValue = "(" + filter.place + ")|(" + filter.responsable + ")|(" + filter.period + ")";
+            var regex = new Regex(searchValue, RegexOptions.IgnoreCase);
+
+            if (filter.HasFilter())
+            {
+                items = collection.AsQueryable().Where(visit =>
+                    regex.IsMatch(visit.place) ||
+                    regex.IsMatch(visit.responsable) ||
+                    regex.IsMatch(visit.period)
+                ).ToList();
+            }
+            else
+            {
+                items = await collection.Find(_ => true).ToListAsync();
+            }
             return items;
         }
 

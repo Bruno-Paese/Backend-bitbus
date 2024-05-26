@@ -3,7 +3,7 @@ using POCMONGO.Domain.Entities;
 
 namespace POCMONGO.Domain.Validators
 {
-    public class VisitorValidator: IValidator
+    public class VisitorValidator: BaseValidator, IValidator
     {
         public bool IsValid(Entity entity)
         {
@@ -16,6 +16,7 @@ namespace POCMONGO.Domain.Validators
 
             if (visitor.Name == "")
             {
+                setError("The visitors must be valid to be set in a visit: The name must be filled");
                 return false;
             }
 

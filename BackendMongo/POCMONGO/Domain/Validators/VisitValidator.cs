@@ -18,6 +18,16 @@ namespace POCMONGO.Domain.Validators
                 return false;
             }
 
+            if (visit.place == "" || visit.place == null)
+            {
+                return false;
+            }
+
+            if (visit.responsable == "" || visit.responsable == null)
+            {
+                return false;
+            }
+
             return true;
         }
 
