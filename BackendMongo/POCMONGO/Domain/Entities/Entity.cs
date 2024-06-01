@@ -8,7 +8,7 @@ namespace POC_Mongo.Src.Domain.Entities
     public abstract class Entity
     {
 
-        protected static String DATABASE = "curso-node";
+        protected static String DATABASE = "bitbus";
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
