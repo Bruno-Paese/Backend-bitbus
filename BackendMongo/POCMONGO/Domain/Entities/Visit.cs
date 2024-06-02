@@ -28,7 +28,21 @@ namespace POCMONGO.Domain.Entities
         public async Task<List<Visit>> getAll(VisitFilter filter)
         {
             List<Visit> items;
-            var searchValue = "(" + filter.place + ")|(" + filter.responsable + ")|(" + filter.period + ")";
+            var searchValue = "";
+            if (filter.place != "")
+            {
+                searchValue += "(" + filter.place + ")";
+            }
+            if (filter.responsable != "")
+            {
+                searchValue += "(" + filter.responsable + ")";
+;
+            }
+            if (filter.period != "")
+            {
+                searchValue += "(" + filter.period + ")";
+            }
+
             var regex = new Regex(searchValue, RegexOptions.IgnoreCase);
 
             if (filter.HasFilter())

@@ -114,13 +114,6 @@ public class VisitController : ControllerBase
                 return BadRequest(validator.getErrors());
             }
 
-            Visitor savedVisitor = await visitor.getByName();
-
-            if (savedVisitor != null) 
-            {
-                visitor.Id = savedVisitor.Id;
-            }
-
             List<Visitor> newVisitors = new List<Visitor>();
             if (visit.visitors != null)
             {
@@ -131,6 +124,17 @@ public class VisitController : ControllerBase
             {
                 return BadRequest("Você já marcou presença nessa visita");
             }
+
+            Visitor savedVisitor = await visitor.getByName();
+
+            if (savedVisitor != null)
+            {
+                visitor.Id = savedVisitor.Id;
+            } else
+            {
+                await visitor.save();
+            }
+
             newVisitors.Add(visitor);
             visit.visitors = newVisitors.ToArray();
 
