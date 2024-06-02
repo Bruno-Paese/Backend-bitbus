@@ -127,7 +127,7 @@ public class VisitController : ControllerBase
                 newVisitors = visit.visitors.ToList();
             }
 
-            if (Array.FindAll(visit.visitors, x => x.Id == visitor.Id).Length > 0)
+            if (Array.FindAll(visit.visitors, x => x.Name == visitor.Name).Length > 0)
             {
                 return BadRequest("Você já marcou presença nessa visita");
             }
