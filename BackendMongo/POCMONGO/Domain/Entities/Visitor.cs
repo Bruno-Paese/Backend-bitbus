@@ -28,5 +28,18 @@ namespace POCMONGO.Domain.Entities
                 return false;
             }
         }
+
+        public async Task<Visitor> getByName()
+        {
+            try
+            {
+                var visitor = await collection.Find(x => x.Name == this.Name).FirstOrDefaultAsync();
+                return visitor;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }

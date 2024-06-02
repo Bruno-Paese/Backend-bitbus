@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver.Linq;
 using POCMONGO.Controllers.Filter;
 using POCMONGO.Domain.Entities;
 using POCMONGO.Domain.Validators;
@@ -98,6 +99,54 @@ public class VisitController : ControllerBase
             return StatusCode(500);
         }
     }
+
+    [HttpPut("addvisitors/{id}")]
+    public async Task<IActionResult> addVisitors(string id, [FromBody] Visitor visitor)
+    {
+        try
+        {
+            VisitorValidator validator = new VisitorValidator();
+            Visit visit = new Visit();
+            visit = await visit.getOne(id);
+
+            if (!validator.IsValid(visitor))
+            {
+                return BadRequest(validator.getErrors());
+            }
+
+            Visitor savedVisitor = await visitor.getByName();
+
+            if (savedVisitor != null) 
+            {
+                visitor.Id = savedVisitor.Id;
+            }
+
+            List<Visitor> newVisitors = new List<Visitor>();
+            if (visit.visitors != null)
+            {
+                newVisitors = visit.visitors.ToList();
+            }
+
+            if (Array.FindAll(visit.visitors, x => x.Id == visitor.Id).Length > 0)
+            {
+                return BadRequest("Você já marcou presença nessa visita");
+            }
+            newVisitors.Add(visitor);
+            visit.visitors = newVisitors.ToArray();
+
+            if (await visit.update())
+            {
+                return CreatedAtAction("Update", visit);
+            }
+
+            return BadRequest();
+        }
+        catch
+        {
+            return StatusCode(500);
+        }
+    }
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> delete(string id)
