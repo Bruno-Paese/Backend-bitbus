@@ -10,6 +10,7 @@ namespace ItemStoreApi.Controllers;
 [Route("api/[controller]")]
 public class VisitController : ControllerBase
 {
+    private const bool ALLOW_SAME_NAME = true;
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] VisitFilter? filter)
     {
@@ -118,11 +119,6 @@ public class VisitController : ControllerBase
             if (visit.visitors != null)
             {
                 newVisitors = visit.visitors.ToList();
-            }
-
-            if (Array.FindAll(visit.visitors, x => x.Name == visitor.Name).Length > 0)
-            {
-                return BadRequest("Você já marcou presença nessa visita");
             }
 
             Visitor savedVisitor = await visitor.getByName();

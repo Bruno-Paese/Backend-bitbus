@@ -9,6 +9,7 @@ namespace POCMONGO.Domain.Entities
         private const string COLLECTION_NAME = "Visitor";
         private IMongoCollection<Visitor> collection;
         public string? Name { get; set; }
+        public string? email { get; set; }
 
         public Visitor()
         {
