@@ -121,6 +121,11 @@ public class VisitController : ControllerBase
                 newVisitors = visit.visitors.ToList();
             }
 
+            if (!ALLOW_SAME_NAME && Array.FindAll(visit.visitors, x => x.Name == visitor.Name).Length > 0)
+            {
+                return BadRequest("Você já marcou presença nessa visita");
+            }
+
             Visitor savedVisitor = await visitor.getByName();
 
             if (savedVisitor != null)
