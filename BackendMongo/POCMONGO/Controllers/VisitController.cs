@@ -130,7 +130,7 @@ public class VisitController : ControllerBase
 
             if (savedVisitor != null)
             {
-                visitor.Id = savedVisitor.Id;
+                visitor = savedVisitor;
             } else
             {
                 await visitor.save();
