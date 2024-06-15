@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using POC_Mongo.Src.Domain.Entities;
 using POC_Mongo.Src.Repositories.MongoDB;
+using POCMONGO.Domain.Validators;
 
 namespace POCMONGO.Domain.Entities
 {
@@ -8,7 +9,7 @@ namespace POCMONGO.Domain.Entities
     {
         private const string COLLECTION_NAME = "Visitor";
         private IMongoCollection<Visitor> collection;
-        public string? Name { get; set; }
+        public string Name { get; set; }
         public string? email { get; set; }
 
         public Visitor()
@@ -35,6 +36,19 @@ namespace POCMONGO.Domain.Entities
             try
             {
                 var visitor = await collection.Find(x => x.Name == this.Name).FirstOrDefaultAsync();
+                return visitor;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public Visitor getById()
+        {
+            try
+            {
+                var visitor = collection.Find(x => x.Id == this.Id).FirstOrDefault();
                 return visitor;
             }
             catch (Exception ex)
