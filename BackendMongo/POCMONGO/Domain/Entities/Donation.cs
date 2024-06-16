@@ -19,7 +19,7 @@ namespace POC_Mongo.Src.Domain.Entities
             collection = client.GetDatabase(DATABASE).GetCollection<Donation>(COLLECTION_NAME);
         }
 
-        public async Task<Boolean> save()
+        public async Task<Boolean> Save()
         {
             try
             {
@@ -32,9 +32,14 @@ namespace POC_Mongo.Src.Domain.Entities
             }
         }
 
-        public async Task<Donation> getOne(string id)
+        public async Task<Donation> GetOne(string id)
         {
             return await collection.Find((x) => x.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Donation>> GetAll()
+        {
+            return await collection.Find(_ => true).ToListAsync();
         }
     }
 }

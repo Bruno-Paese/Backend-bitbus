@@ -16,13 +16,19 @@ namespace POCMONGO.Controllers
                 DonationValidator dv = new DonationValidator();
                 if (dv.IsValid(donation))
                 {
-                    await donation.save();
+                    await donation.Save();
                     return CreatedAtAction("Save", donation);
                 }
                 return BadRequest();
             } catch (Exception ex) {
                 return BadRequest();
             }
+        }
+
+        [HttpGet]
+        public async Task<List<Donation>> getAll()
+        {
+            return await (new Donation()).GetAll();
         }
     }
 }
