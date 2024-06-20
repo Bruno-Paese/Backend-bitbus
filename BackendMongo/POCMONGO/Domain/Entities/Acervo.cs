@@ -36,6 +36,19 @@ namespace POCMONGO.Domain.Entities
             collection = client.GetDatabase(DATABASE).GetCollection<Acervo>(COLLECTION_NAME);
         }
 
+        public async Task<Boolean> create()
+        {
+            try
+            {
+                await collection.InsertOneAsync(this);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public async Task<List<Acervo>> getAll(AcervoFilter filter)
         {
             List<Acervo> items;
@@ -119,6 +132,17 @@ namespace POCMONGO.Domain.Entities
         Task<IEntity> IEntity.getOne(string id)
         {
             throw new NotImplementedException();
+        }
+
+        internal bool isValid(bool aLLOW_SAME_NAME)
+        {
+
+            if (this.code == "")
+                return false;
+            if (this.category == "")
+                return false;
+
+            return true;    
         }
     }
 }

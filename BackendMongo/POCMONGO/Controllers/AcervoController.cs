@@ -38,6 +38,27 @@ namespace POCMONGO.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult > create([FromBody] Acervo acervo)
+        {
+            try
+            {
+                if (acervo.isValid(ALLOW_SAME_NAME))
+                {
+                    if (await acervo.create())
+                    {
+                        return CreatedAtAction("Create", acervo);
+                    }
+                }
+                return BadRequest();
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
+        }
+
+
         [HttpPut]
         public async Task<IActionResult> update([FromBody] Acervo acervo)
         {
