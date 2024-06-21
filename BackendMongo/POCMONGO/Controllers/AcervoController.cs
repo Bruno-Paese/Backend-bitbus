@@ -7,7 +7,7 @@ namespace POCMONGO.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class VisitController : ControllerBase
+    public class AceervoController : ControllerBase
     {
         private const bool ALLOW_SAME_NAME = true;
         [HttpGet]
