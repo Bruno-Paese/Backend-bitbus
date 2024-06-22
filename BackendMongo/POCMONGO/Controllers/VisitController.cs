@@ -69,38 +69,6 @@ public class VisitController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> updateVisitors(string id, [FromBody] Visitor[] visitors)
-    {
-        try
-        {
-            VisitorValidator validator = new VisitorValidator();
-            Visit visit = new Visit();
-            visit = await visit.getOne(id);
-        
-            visit.visitors = visitors;
-
-            foreach (var visitor in visitors)
-            {
-                if (!validator.IsValid(visitor))
-                {
-                    return BadRequest(validator.getErrors());
-                }
-            }
-
-            if (await visit.update())
-            {
-                return CreatedAtAction("Update", visit);
-            }
-
-            return BadRequest();
-        }
-        catch
-        {
-            return StatusCode(500);
-        }
-    }
-
     [HttpPut("addvisitors/{id}")]
     public async Task<IActionResult> addVisitors(string id, [FromBody] Visitor visitor)
     {
