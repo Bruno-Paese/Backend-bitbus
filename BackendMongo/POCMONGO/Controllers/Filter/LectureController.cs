@@ -1,21 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver.Linq;
 using POCMONGO.Controllers.Filter;
 using POCMONGO.Domain.Entities;
 using POCMONGO.Domain.Validators;
 
-namespace POCMONGO.Controllers
+namespace POCMONGO.Controllers.Filter
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AcervoController : ControllerBase
+    public class LectureController : ControllerBase
     {
         private const bool ALLOW_SAME_NAME = true;
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] AcervoFilter? filter)
+        public async Task<IActionResult> Get([FromQuery] LectureFilter? filter)
         {
             try
             {
-                var result = await (new Acervo()).getAll(filter);
+                var result = await (new Lecture()).getAll(filter);
                 return Ok(result);
             }
             catch
@@ -30,7 +31,7 @@ namespace POCMONGO.Controllers
         {
             try
             {
-                return Ok(await (new Acervo()).getOne(id));
+                return Ok(await (new Lecture()).getOne(id));
             }
             catch
             {
@@ -39,17 +40,16 @@ namespace POCMONGO.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult > create([FromBody] Acervo acervo)
+        public async Task<IActionResult> save([FromBody] Lecture lecture)
         {
             try
             {
-                if (acervo.isValid(ALLOW_SAME_NAME))
+                var saveResult = await lecture.save();
+                if (saveResult)
                 {
-                    if (await acervo.create())
-                    {
-                        return CreatedAtAction("Create", acervo);
-                    }
+                    return CreatedAtAction("Save", lecture);
                 }
+
                 return BadRequest();
             }
             catch
@@ -58,17 +58,15 @@ namespace POCMONGO.Controllers
             }
         }
 
-
         [HttpPut]
-        public async Task<IActionResult> update([FromBody] Acervo acervo)
+        public async Task<IActionResult> update([FromBody] Lecture lecture)
         {
             try
             {
-                if (await acervo.update())
+                if (await lecture.update())
                 {
-                    return CreatedAtAction("Update", acervo);
+                    return Ok();
                 }
-
                 return BadRequest();
             }
             catch
@@ -82,13 +80,13 @@ namespace POCMONGO.Controllers
         {
             try
             {
-                Acervo acervo =  new Acervo();
-                acervo.Id = id;
-                if (!await acervo.delete())
+                 Lecture lecture = new Lecture();
+                lecture.Id = id;
+                if (await lecture.delete())
                 {
-                    return BadRequest();
+                    return Ok();
                 }
-                return Ok();
+                return BadRequest();
             }
             catch
             {
@@ -97,3 +95,4 @@ namespace POCMONGO.Controllers
         }
     }
 }
+
