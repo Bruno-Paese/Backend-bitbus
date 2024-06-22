@@ -1,5 +1,4 @@
 ﻿using MongoDB.Driver;
-using POC_Mongo.Src.Domain.Entities;
 using POC_Mongo.Src.Repositories.MongoDB;
 using POCMONGO.Controllers.Filter;
 using System.Text.RegularExpressions;

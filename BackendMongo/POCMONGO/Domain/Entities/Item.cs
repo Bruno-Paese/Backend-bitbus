@@ -1,20 +1,30 @@
 ﻿using MongoDB.Driver;
 using POC_Mongo.Src.Repositories.MongoDB;
-using POCMONGO.Domain.Entities;
-
-namespace POC_Mongo.Src.Domain.Entities
+namespace POCMONGO.Domain.Entities
 {
     public class Item : Entity, IEntity
     {
         private IMongoCollection<Item> collection;
-        public string? Name { get; set; }
-
-        public string? Type { get; set; }
+        public string Code { get; set; }
+        public int Classification { get; set; }
+        public int Category { get; set; }
+        public int Year { get; set; }
+        public int Quantity { get; set; }
+        public float Height { get; set; }
+        public float Width { get; set; }
+        public float Length { get; set; }
+        public string Information { get; set; }
+        public List<string> Pictures { get; set; }
+        public List<string> Links { get; set; }
+        public string StoragePlace { get; set; }
+        public string DonorName { get; set; }
+        public string DonationDate { get; set; }
+        public string Manufacturer { get; set; }
 
         public Item()
         {
             MongoClient client = MongoDBRepository.connect();
-            collection = client.GetDatabase(DATABASE).GetCollection<Item>("jorge");
+            collection = client.GetDatabase(DATABASE).GetCollection<Item>("Item");
         }
 
         public async Task<List<Item>> getAll()

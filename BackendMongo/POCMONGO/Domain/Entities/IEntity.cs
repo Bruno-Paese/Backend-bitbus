@@ -1,6 +1,4 @@
-﻿using POC_Mongo.Src.Domain.Entities;
-
-namespace POCMONGO.Domain.Entities
+﻿namespace POCMONGO.Domain.Entities
 {
     public interface IEntity
     {
