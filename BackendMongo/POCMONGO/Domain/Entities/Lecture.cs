@@ -4,6 +4,7 @@ using MongoDB.Driver;
 using POC_Mongo.Src.Domain.Entities;
 using POC_Mongo.Src.Repositories.MongoDB;
 using POCMONGO.Controllers.Filter;
+using POCMONGO.Domain.Validators;
 using System.Text.RegularExpressions;
 
 namespace POCMONGO.Domain.Entities
@@ -17,10 +18,11 @@ namespace POCMONGO.Domain.Entities
 
         public string person { get; set; }
         public string local { get; set; }
-        public DateTime datetime { get; set; }
+        public string datetime { get; set; }
         public string duration { get; set; }
         public string resume { get; set; }
         public string brief { get; set; }
+        public LectureValidator validator;
 
         public Lecture()
         {
@@ -53,15 +55,21 @@ namespace POCMONGO.Domain.Entities
                 seachValue += "(" + filter.local + ")";
             if (filter.datetime != "")
                 seachValue += "(" + filter.datetime + ")";
-            if (filter.duration != "")
-                seachValue += "(" + filter.duration + ")";
-            if (filter.resume != "")
-                seachValue += "(" + filter.resume + ")";
-            if (filter.brief != "")
-                seachValue += "(" + filter.brief + ")";
 
-            var filterBuilder = Builders<Lecture>.Filter.Regex("person", new BsonRegularExpression(new Regex(seachValue, RegexOptions.IgnoreCase)));
-            items = await collection.Find(filterBuilder).ToListAsync();
+            Regex regex = new Regex(seachValue, RegexOptions.IgnoreCase);
+
+            if (filter.HasFilter())
+            {
+                items = collection.AsQueryable().Where(lecture =>
+                    regex.IsMatch(lecture.person ?? string.Empty) ||
+                    regex.IsMatch(lecture.local ?? string.Empty) ||
+                    regex.IsMatch(lecture.datetime ?? string.Empty)
+                ).ToList();
+            }
+            else
+            {
+                items = await collection.Find(_ => true).ToListAsync();
+            }
 
             return items;
         }

@@ -8,7 +8,7 @@
 
         public bool HasFilter()
         {
-            return this.period != null || this.place != null || this.responsable != null;
+            return this.place != null || this.responsable != null || this.period != null;
         }
     }
 }

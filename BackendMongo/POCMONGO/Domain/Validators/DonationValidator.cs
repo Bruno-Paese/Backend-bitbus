@@ -7,19 +7,11 @@ namespace POCMONGO.Domain.Validators
         public bool IsValid(Entity donation)
         {
             if (donation == null)
-            {
-                return false;
-            }
+                return setError("Donation is null");
 
             Donation d = donation as Donation;
-            if (d.Ammount == null || d.DonationDate == null || d.DonerName == null)
-            {
-                return false ;
-            }
-            if (d.Ammount <= 0|| d.DonationDate == "" || d.DonerName == "")
-            {
-                return false;
-            }
+            if (d.Ammount <= 0 || d.DonationDate == null || d.DonerName == null)
+                return setError("Donation Ammount, Date or Name is invalid");
 
             return true;
         }

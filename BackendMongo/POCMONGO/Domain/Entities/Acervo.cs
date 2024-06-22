@@ -12,12 +12,13 @@ namespace POCMONGO.Domain.Entities
 
         private IMongoCollection<Acervo> collection;
 
-        public string code{ get; set; }
+        public string name { get; set; }
         public int classification { get; set; }
         public int year { get; set; }
         public int quantity { get; set; }
         public int height { get; set; }
         public int width{ get; set; }
+        public int length { get; set; }
         public string information { get; set; }
         public string[] picture { get; set; }
         public string[] links{ get; set; }
@@ -25,7 +26,7 @@ namespace POCMONGO.Domain.Entities
         public string donerName { get; set; } = "";
         public string donationDate { get; set; } = "";
         public string manufacturer { get; set; }
-        public string category { get; set; }
+        public int category { get; set; }
 
 
 
@@ -71,10 +72,10 @@ namespace POCMONGO.Domain.Entities
             if (filter.HasFilter())
             {
                 items = collection.AsQueryable().Where(acervo =>
-                    regex.IsMatch(acervo.code ?? string.Empty) ||
+                    regex.IsMatch(acervo.name ?? string.Empty) ||
                     regex.IsMatch(acervo.classification.ToString() ?? string.Empty) ||
                     regex.IsMatch(acervo.year.ToString() ?? string.Empty) ||
-                    regex.IsMatch(acervo.category ?? string.Empty) ||
+                    regex.IsMatch(acervo.category.ToString() ?? string.Empty) ||
                     regex.IsMatch(acervo.manufacturer ?? string.Empty) ||
                     regex.IsMatch(acervo.storagePlace ?? string.Empty)
                 ).ToList();
@@ -131,17 +132,6 @@ namespace POCMONGO.Domain.Entities
         Task<IEntity> IEntity.getOne(string id)
         {
             throw new NotImplementedException();
-        }
-
-        internal bool isValid(bool aLLOW_SAME_NAME)
-        {
-
-            if (this.code == "")
-                return false;
-            if (this.category == "")
-                return false;
-
-            return true;    
         }
     }
 }
