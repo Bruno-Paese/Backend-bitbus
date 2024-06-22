@@ -1,6 +1,9 @@
 ﻿using MongoDB.Driver;
+using NUnit.Framework.Interfaces;
 using POC_Mongo.Src.Repositories.MongoDB;
+using POCMONGO.Controllers.Filter;
 using POCMONGO.Domain.Entities;
+using System.Text.RegularExpressions;
 
 namespace POC_Mongo.Src.Domain.Entities
 {
@@ -37,9 +40,25 @@ namespace POC_Mongo.Src.Domain.Entities
             return await collection.Find((x) => x.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<List<Donation>> GetAll()
+        public async Task<List<Donation>> GetAll(DonationFilter donationFilter)
         {
-            return await collection.Find(_ => true).ToListAsync();
+            List<Donation> items;
+
+
+            if (donationFilter.HasFilter())
+            {
+                Regex regex = donationFilter.GetFilterRegex();
+                items = collection.AsQueryable().Where(Donation =>
+                    regex.IsMatch(Donation.DonationDate) ||
+                    regex.IsMatch(Donation.DonerName)
+                ).ToList();
+            }
+            else
+            {
+                items = await collection.Find(_ => true).ToListAsync();
+            }
+
+            return items;
         }
     }
 }

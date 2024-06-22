@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using POC_Mongo.Src.Domain.Entities;
+using POCMONGO.Controllers.Filter;
 using POCMONGO.Domain.Validators;
 
 namespace POCMONGO.Controllers
@@ -26,9 +27,9 @@ namespace POCMONGO.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Donation>> getAll()
+        public async Task<List<Donation>> GetAll([FromQuery] DonationFilter donationFilter)
         {
-            return await (new Donation()).GetAll();
+            return await (new Donation()).GetAll(donationFilter);
         }
     }
 }
