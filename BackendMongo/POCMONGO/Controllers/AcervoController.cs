@@ -83,7 +83,7 @@ namespace POCMONGO.Controllers
             try
             {
                 Acervo acervo =  new Acervo();
-                acervo.id = id;
+                acervo.Id = id;
                 if (!await acervo.delete())
                 {
                     return BadRequest();

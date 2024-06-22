@@ -12,7 +12,6 @@ namespace POCMONGO.Domain.Entities
 
         private IMongoCollection<Acervo> collection;
 
-        public string id { get; set; }
         public string code{ get; set; }
         public int classification { get; set; }
         public int year { get; set; }
@@ -23,8 +22,8 @@ namespace POCMONGO.Domain.Entities
         public string[] picture { get; set; }
         public string[] links{ get; set; }
         public string storagePlace { get; set; }
-        public string donerName { get; set; }
-        public string donationDate { get; set; }
+        public string donerName { get; set; } = "";
+        public string donationDate { get; set; } = "";
         public string manufacturer { get; set; }
         public string category { get; set; }
 
@@ -90,14 +89,14 @@ namespace POCMONGO.Domain.Entities
 
         public async Task<Acervo> getOne(string id)
         {
-            return await collection.Find((x) => x.id == id).FirstOrDefaultAsync();
+            return await collection.Find((x) => x.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<Boolean> update()
         {
             try 
             { 
-                await collection .ReplaceOneAsync(x => x.id == this.id, this);
+                await collection .ReplaceOneAsync(x => x.Id == this.Id, this);
                 return true;
             }
             catch (Exception ex)
@@ -110,7 +109,7 @@ namespace POCMONGO.Domain.Entities
         {
             try
             {
-                await collection.DeleteOneAsync(x => x.id == this.id);
+                await collection.DeleteOneAsync(x => x.Id == this.Id);
                 return true;
             }
             catch (Exception ex)
