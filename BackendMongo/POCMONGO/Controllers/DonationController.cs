@@ -9,13 +9,14 @@ namespace POCMONGO.Controllers
     [Route("api/[controller]")]
     public class DonationController: ControllerBase
     {
+        private readonly DonationValidator _validator = new DonationValidator();
+
         [HttpPost]
         public async Task<IActionResult> save(Donation donation)
         {
             try
             {
-                DonationValidator dv = new DonationValidator();
-                if (dv.IsValid(donation))
+                if (_validator.IsValid(donation))
                 {
                     await donation.Save();
                     return CreatedAtAction("Save", donation);

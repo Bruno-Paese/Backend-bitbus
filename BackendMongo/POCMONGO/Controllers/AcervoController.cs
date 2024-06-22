@@ -10,6 +10,8 @@ namespace POCMONGO.Controllers
     public class AcervoController : ControllerBase
     {
         private const bool ALLOW_SAME_NAME = true;
+        private readonly AcervoValidator _validator = new AcervoValidator();
+
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] AcervoFilter? filter)
         {
@@ -43,7 +45,7 @@ namespace POCMONGO.Controllers
         {
             try
             {
-                if (acervo.isValid(ALLOW_SAME_NAME))
+                if (_validator.IsValid(acervo))
                 {
                     if (await acervo.create())
                     {

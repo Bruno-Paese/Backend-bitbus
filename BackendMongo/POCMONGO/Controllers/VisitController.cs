@@ -11,6 +11,8 @@ namespace ItemStoreApi.Controllers;
 public class VisitController : ControllerBase
 {
     private const bool ALLOW_SAME_NAME = true;
+
+    private readonly VisitValidator _validator = new VisitValidator();
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] VisitFilter? filter)
     {
@@ -38,10 +40,12 @@ public class VisitController : ControllerBase
     {
         try
         {
-            var saveResult = await visit.save();
-            if (saveResult)
+            if(_validator.IsValid(visit))
             {
-                return CreatedAtAction("Save", visit);
+                if (await visit.save())
+                {
+                    return CreatedAtAction("Save", visit);
+                }
             }
 
             return BadRequest();

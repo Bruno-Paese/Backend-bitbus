@@ -3,44 +3,23 @@ using POCMONGO.Domain.Entities;
 
 namespace POCMONGO.Domain.Validators
 {
-    public class VisitValidator : IValidator
+    public class VisitValidator :BaseValidator,  IValidator
     {
         public bool IsValid(Entity entity)
         {
             Visit visit  = entity as Visit;
 
-            if (visit == null) {
-                return false;
-            }
+            if (visit == null) 
+                return setError("The visit is null");
 
             if (!validateDate(visit.period))
-            {
-                return false;
-            }
+                return setError("The period is not a valid date");
 
-            if (visit.place == "" || visit.place == null)
-            {
-                return false;
-            }
+            if (String.IsNullOrEmpty(visit.place))
+                return setError("The place must be filled");
 
-            if (visit.responsable == "" || visit.responsable == null)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool validateDate(string dateString)
-        {
-            try
-            {
-                DateTime.Parse(dateString);
-            }
-            catch
-            {
-                return false;
-            }
+            if (String.IsNullOrEmpty(visit.responsable))
+                return setError("The responsable must be filled");
 
             return true;
         }

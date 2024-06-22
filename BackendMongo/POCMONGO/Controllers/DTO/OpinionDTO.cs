@@ -39,7 +39,7 @@ namespace POCMONGO.Controllers.DTO
             VisitorId = opinion.visitor.Id;
 
             VisitId = opinion.visit.Id;
-
+            
             return this;
         }
     }

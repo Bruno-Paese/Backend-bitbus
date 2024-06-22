@@ -10,15 +10,10 @@ namespace POCMONGO.Domain.Validators
             Visitor visitor = entity as Visitor;
 
             if (visitor == null)
-            {
-                return false;
-            }
+                return setError("The visitor is null");
 
-            if (visitor.Name == "")
-            {
+            if (String.IsNullOrEmpty(visitor.Name))
                 setError("The visitors must be valid to be set in a visit: The name must be filled");
-                return false;
-            }
 
             return true;
         }

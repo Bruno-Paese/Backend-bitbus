@@ -16,7 +16,7 @@ namespace POCMONGO.Domain.Entities
         public String period {  get; set; }
         public String responsable {  get; set; }
         public Visitor[] visitors {  get; set; } = new Visitor[0];
-        public Item[] items { get; set; } = new Item[0];
+        public Acervo[] items { get; set; } = new Acervo[0];
 
 
         public Visit()

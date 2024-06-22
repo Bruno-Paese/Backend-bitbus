@@ -4,19 +4,22 @@ using POCMONGO.Controllers.Filter;
 using POCMONGO.Domain.Entities;
 using POCMONGO.Domain.Validators;
 
-namespace POCMONGO.Controllers.Filter
+namespace POCMONGO.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class LectureController : ControllerBase
     {
         private const bool ALLOW_SAME_NAME = true;
+
+        private readonly LectureValidator _validator = new LectureValidator();
+
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] LectureFilter? filter)
         {
             try
             {
-                var result = await (new Lecture()).getAll(filter);
+                var result = await new Lecture().getAll(filter);
                 return Ok(result);
             }
             catch
@@ -31,7 +34,7 @@ namespace POCMONGO.Controllers.Filter
         {
             try
             {
-                return Ok(await (new Lecture()).getOne(id));
+                return Ok(await new Lecture().getOne(id));
             }
             catch
             {
@@ -44,11 +47,11 @@ namespace POCMONGO.Controllers.Filter
         {
             try
             {
-                var saveResult = await lecture.save();
-                if (saveResult)
-                {
-                    return CreatedAtAction("Save", lecture);
-                }
+                if(_validator.IsValid(lecture))
+                    if (await lecture.save())
+                    {
+                        return CreatedAtAction("Save", lecture);
+                    }
 
                 return BadRequest();
             }
@@ -80,7 +83,7 @@ namespace POCMONGO.Controllers.Filter
         {
             try
             {
-                 Lecture lecture = new Lecture();
+                Lecture lecture = new Lecture();
                 lecture.Id = id;
                 if (await lecture.delete())
                 {
