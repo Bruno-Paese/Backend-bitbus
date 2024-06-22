@@ -71,12 +71,12 @@ namespace POCMONGO.Domain.Entities
             if (filter.HasFilter())
             {
                 items = collection.AsQueryable().Where(acervo =>
-                    regex.IsMatch(acervo.code) ||
-                    regex.IsMatch(Convert.ToString(acervo.classification)) ||
-                    regex.IsMatch(Convert.ToString(acervo.year)) ||
-                    regex.IsMatch(acervo.category) ||
-                    regex.IsMatch(acervo.manufacturer) ||
-                    regex.IsMatch(acervo.storagePlace)
+                    regex.IsMatch(acervo.code ?? string.Empty) ||
+                    regex.IsMatch(acervo.classification.ToString() ?? string.Empty) ||
+                    regex.IsMatch(acervo.year.ToString() ?? string.Empty) ||
+                    regex.IsMatch(acervo.category ?? string.Empty) ||
+                    regex.IsMatch(acervo.manufacturer ?? string.Empty) ||
+                    regex.IsMatch(acervo.storagePlace ?? string.Empty)
                 ).ToList();
             }
             else
