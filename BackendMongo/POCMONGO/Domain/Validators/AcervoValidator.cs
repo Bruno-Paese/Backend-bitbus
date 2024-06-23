@@ -15,7 +15,7 @@ namespace POCMONGO.Domain.Validators
             if (String.IsNullOrEmpty(acervo.name))
                 return setError("The acervo must have a name");
 
-            if (acervo.classification == 0)
+            if (acervo.category == 0)
                 return setError("The acervo must have a classification");
 
             return true;

@@ -20,7 +20,8 @@ public class VisitController : ControllerBase
         {
             var result = await (new Visit()).getAll(filter);
             return Ok(result);
-        } catch {
+        } catch (Exception e) {
+
             return StatusCode(500);
         }
 

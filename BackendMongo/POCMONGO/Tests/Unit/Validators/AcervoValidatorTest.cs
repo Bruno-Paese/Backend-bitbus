@@ -39,12 +39,12 @@ namespace POCMONGO.Tests.Unit.Validators
         }
 
         [TestMethod]
-        public void testValidatorOnInvalidClassification()
+        public void testValidatorOnInvalidCategory()
         {
             SetUp();
 
             Acervo acervo = new Acervo();
-            acervo.classification = 0;
+            acervo.category = 0;
 
             Assert.IsNotNull(validator);
             Assert.IsFalse(validator.IsValid(acervo));
@@ -57,7 +57,7 @@ namespace POCMONGO.Tests.Unit.Validators
 
             Acervo acervo = new Acervo();
             acervo.name = "Threadripper";
-            acervo.classification = 1;
+            acervo.category = 1;
 
             Assert.IsNotNull(validator);
             Assert.IsTrue(validator.IsValid(acervo));

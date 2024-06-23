@@ -14,15 +14,13 @@ namespace POCMONGO.Domain.Entities
 
         public string name { get; set; }
         public int classification { get; set; }
-        public int year { get; set; }
-        public int quantity { get; set; }
-        public int height { get; set; }
-        public int width{ get; set; }
-        public int length { get; set; }
-        public string information { get; set; }
+        public int year { get; set; } = 0;
+        public int quantity { get; set; } = 0;
+        public string dimensions { get; set; } = "";
+        public string information { get; set; } = "";
         public string[] picture { get; set; }
         public string[] links{ get; set; }
-        public string storagePlace { get; set; }
+        public string storagePlace { get; set; } = "";
         public string donerName { get; set; } = "";
         public string donationDate { get; set; } = "";
         public string manufacturer { get; set; }
