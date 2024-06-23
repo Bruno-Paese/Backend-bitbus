@@ -25,6 +25,8 @@ namespace POCMONGO.Domain.Entities
         public string donationDate { get; set; } = "";
         public string manufacturer { get; set; }
         public int category { get; set; }
+        public int type { get; set; } = 0;
+        public string model { get; set; } = "";
 
 
 
@@ -94,8 +96,8 @@ namespace POCMONGO.Domain.Entities
         public async Task<Boolean> update()
         {
             try 
-            { 
-                await collection .ReplaceOneAsync(x => x.Id == this.Id, this);
+            {
+                await collection.ReplaceOneAsync(x => x.Id == this.Id, this);
                 return true;
             }
             catch (Exception ex)
