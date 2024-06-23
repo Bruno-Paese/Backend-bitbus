@@ -17,6 +17,7 @@ namespace POCMONGO.Domain.Entities
         private IMongoCollection<Lecture> collection;
 
         public string person { get; set; }
+        public string title { get; set; }
         public string local { get; set; }
         public string datetime { get; set; }
         public string duration { get; set; }
