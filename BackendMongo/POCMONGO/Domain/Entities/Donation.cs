@@ -60,5 +60,19 @@ namespace POC_Mongo.Src.Domain.Entities
 
             return items;
         }
+
+        public async Task<Boolean> delete()
+        {
+            try
+            {
+                await collection.DeleteOneAsync(x => x.Id == this.Id);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using POC_Mongo.Src.Domain.Entities;
 using POCMONGO.Controllers.Filter;
+using POCMONGO.Domain.Entities;
 using POCMONGO.Domain.Validators;
 
 namespace POCMONGO.Controllers
@@ -31,6 +32,25 @@ namespace POCMONGO.Controllers
         public async Task<List<Donation>> GetAll([FromQuery] DonationFilter donationFilter)
         {
             return await (new Donation()).GetAll(donationFilter);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> delete(string id)
+        {
+            try
+            {
+                Donation doantion = new Donation();
+                doantion.Id = id;
+                if (!await doantion.delete())
+                {
+                    return BadRequest();
+                }
+                return Ok();
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
         }
     }
 }
