@@ -84,7 +84,7 @@ namespace POCMONGO.Domain.Entities
         {
             try
             {
-                await collection.ReplaceOneAsync(Builders<Lecture>.Filter.Eq("_id", ObjectId.Parse(Id)), this);
+                await collection.ReplaceOneAsync((x) => x.Id == Id, this);
                 return true;
             }
             catch (Exception ex)
